@@ -1,0 +1,187 @@
+/**
+ *
+ * Apply your custom CSS here
+ *
+*/
+
+body {
+    font-size: 13px;
+    background-color: #eee;
+}
+
+a {}
+
+.textareaNumber {
+    /* background: url("../images/linenumber.png"); */
+    background-attachment: local;
+    background-repeat: no-repeat;
+    padding-left: 35px;
+    padding-top: 10px;
+    border-color: #ccc;
+}
+
+.error-msg {
+    color: red
+}
+
+.pointer {
+    cursor: pointer
+}
+
+.profile {
+    min-height: 355px;
+    display: inline-block;
+}
+
+figcaption.ratings {
+    margin-top: 20px;
+}
+
+figcaption.ratings a {
+    color: #f1c40f;
+    font-size: 11px;
+}
+
+figcaption.ratings a:hover {
+    color: #f39c12;
+    text-decoration: none;
+}
+
+.divider {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.emphasis {
+    border-top: 4px solid transparent;
+}
+
+.emphasis:hover {
+    border-top: 4px solid #1abc9c;
+}
+
+.emphasis h2 {
+    margin-bottom: 0;
+}
+
+span.tags {
+    background: #1abc9c;
+    border-radius: 2px;
+    color: #f5f5f5;
+    font-weight: bold;
+    padding: 2px 4px;
+}
+
+.dropdown-menu {
+    background-color: #34495e;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    width: 250px;
+    margin-left: -125px;
+    left: 50%;
+}
+
+.dropdown-menu .divider {
+    background: none;
+}
+
+.dropdown-menu>li>a {
+    color: #f5f5f5;
+}
+
+.dropup .dropdown-menu {
+    margin-bottom: 10px;
+}
+
+.dropup .dropdown-menu:before {
+    content: "";
+    border-top: 10px solid #34495e;
+    border-right: 10px solid transparent;
+    border-left: 10px solid transparent;
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    margin-left: -10px;
+    z-index: 10;
+}
+
+.user-img-circle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}
+
+.profile-pic {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    /* background-image: url('../../assets/images/no-image-available-md.png'); */
+    background-size: 100% 100%;
+}
+
+.profile-image-block {
+    position: relative;
+    width: 50%;
+}
+
+.middle {
+    transition: .5s ease;
+    opacity: 0;
+    position: relative;
+    top: 10%;
+    left: 10%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%)
+}
+
+.profile-image-block:hover .user-img-circle {
+    opacity: 0.3;
+}
+
+.profile-image-block:hover .middle {
+    opacity: 1;
+}
+
+.text {
+    color: rgba(0, 0, 0, 0.692);
+    padding-left: 40px;
+    font-size: 16px;
+    text-decoration: underline
+}
+
+.btn {
+    border-radius: 0px
+}
+
+.panel {
+    border-radius: 0px
+}
+
+.label {
+    border-radius: 0px
+}
+
+.alert {
+    border-radius: 0px
+}
+
+.form-control {
+    border-radius: 0px
+}
+
+.navbar {
+    border-radius: 0px;
+    position: relative;
+    margin-bottom: -20px;
+}
+
+.breadcrumb {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    list-style: none;
+    background-color: #f5f5f5;
+    border-radius: 0px;
+}
+
+li.active.nav-item {
+    background-color: grey;
+}

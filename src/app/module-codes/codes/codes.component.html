@@ -1,0 +1,31 @@
+<h6>Codes</h6>
+<hr>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <ng-container *ngIf="codes.length>0; else noRecord">
+            <tr *ngFor="let code of codes; let i = index">
+                <td>{{i+1}}</td>
+                <td>{{code.code}}</td>
+                <td>
+                        <a [routerLink]="['/module-codes/edit',code.id]">
+                            <i class="fa fa-pencil"></i>
+                          </a>
+                </td>
+            </tr>
+        </ng-container>
+        <ng-template #noRecord>
+            <tr>
+                <td colspan=3>
+                        There are no codes
+                </td>
+            </tr>
+        </ng-template>
+    </tbody>
+</table>

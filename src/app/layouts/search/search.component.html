@@ -1,0 +1,33 @@
+<accordion>
+  <accordion-group [isOpen]="true">
+    <div accordion-heading class="clearfix" (click)="isOpen=!isOpen;">
+      <i class="fa fa-filter"> Filters</i>
+      <span class="float-right pull-right">
+        <i class="glyphicon" [ngClass]="{'glyphicon-minus': isOpen,'glyphicon-plus': !isOpen }"></i>
+      </span>
+    </div>
+    <!-- <div class="panel panel-default">
+      <div class="panel-body"> -->
+    <div *ngFor="let panel of searchList">
+      <div class="form-group row">
+        <label class="col-sm-1 col-form-label" for="srch">Search: </label>
+        <div class="col-md-4">
+          <div class="btn-group">
+            <input id="srch" (keyup)="updateFilter($event)" type="text" placeholder="Search by {{panel.name}}" name="{{panel.name}}"
+              [(ngModel)]="panel.value" class="form-control">
+            <span *ngIf="panel.value" (click)="onReset()" id="searchclear" class="glyphicon glyphicon-remove-circle clickable"></span>
+          </div>
+        </div>
+        <label class="col-sm-1 col-form-label" for="srch">Pages: </label>
+        <div class="col-md-1">
+          <ng-select [items]="pagesizes" [searchable]="false" [clearable]="false" placeholder="Select page size" [(ngModel)]="rowlimit">
+          </ng-select>
+        </div>
+      </div>
+      <!-- </div>
+      </div> -->
+    </div>
+
+  </accordion-group>
+
+</accordion>

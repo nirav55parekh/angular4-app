@@ -1,0 +1,14 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <span>{{title}}</span>
+  </div>
+  <div class="panel-body">
+    <div class="form-group row" *ngFor="let entry of details | keys">
+      <label for="name" class="col-sm-4 col-form-label">{{entry.key}}</label>
+      <div class="col-sm-8" [ngSwitch]="entry.key">
+        <textarea *ngSwitchCase="'Contents(Python)'" rows="10" class="form-control" [(ngModel)]="entry.value" [disabled]="true"></textarea>
+        <span *ngSwitchDefault> {{entry.value}} </span>
+      </div>
+    </div>
+  </div>
+</div>

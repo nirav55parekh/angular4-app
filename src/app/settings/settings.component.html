@@ -1,0 +1,59 @@
+<form (ngSubmit)="onSubmit(f)" #f="ngForm">
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <span>{{title}}</span>
+    </div>
+    <div class="panel-body">
+      <div class="form-group row">
+        <div class="col-md-6">
+          <label for="name" class="col-sm-4 col-form-label">Application Version Title :</label>
+          <div class="col-sm-8">
+            <input type="text" autocomplete="off" name="applicationVersionTitle" [(ngModel)]="settings.applicationVersionTitle" class="form-control"
+              required="required">
+            <span *ngIf="f.submitted && f.controls.applicationVersionTitle.invalid">
+              <span class="input-error">Application version title is required</span>
+            </span>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="name" class="col-sm-4 col-form-label">Application Version :</label>
+          <div class="col-sm-8">
+            <input type="text" autocomplete="off" name="applicationVersion" [(ngModel)]="settings.applicationVersion" class="form-control"
+              required="required">
+            <span *ngIf="f.submitted && f.controls.applicationVersion.invalid">
+              <span class="input-error">Application version is required</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-6">
+          <label for="name" class="col-sm-4 col-form-label">OS Version Title :</label>
+          <div class="col-sm-8">
+            <input type="text" autocomplete="off" name="osVersionTitle" [(ngModel)]="settings.osVersionTitle" class="form-control" required="required">
+            <span *ngIf="f.submitted && f.controls.osVersionTitle.invalid">
+              <span class="input-error">OS versiona title is required</span>
+            </span>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="name" class="col-sm-4 col-form-label">OS Version :</label>
+          <div class="col-sm-8">
+            <input type="text" autocomplete="off" name="osVersion" [(ngModel)]="settings.osVersion" class="form-control" required="required">
+            <span *ngIf="f.submitted && f.controls.osVersion.invalid">
+              <span class="input-error">OS versiona is required</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-footer">
+      <button type="submit" class="btn btn-success">
+        <span class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span> Save</button>
+      <button type="button" class="btn btn-default" [routerLink]="['/home/makes']">
+        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>Cancel
+      </button>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,94 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3" *ngIf="!isStoreLogin">
+      <img src="./assets/images/logo.png" height="200px" width="500px" />
+      <div class="panel panel-login">
+        <div class="panel-heading pull-left">
+          <div class="row">
+            <div class="col-xs-6">
+              <a (click)="showForm($event)" [ngClass]="{'active':lForm}" class="clickable" id="login-form-link">Login</a>
+            </div>
+            <div class="col-xs-6">
+              <a (click)="showForm($event)" [ngClass]="{'active':sForm}" class="clickable" id="register-form-link">Register</a>
+            </div>
+          </div>
+          <hr>
+          <hr>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="alert alert-danger alert-dismissable" *ngIf="loginError">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                {{loginError}}
+              </div>
+              <form *ngIf="lForm" name="loginForm" (ngSubmit)="login()" role="form" style="display: block;" #f="ngForm">
+                <div class="form-group">
+                  <input type="email" [(ngModel)]="user.email" name="email" id="login-email" tabindex="1" class="form-control" placeholder="Email"
+                    required>
+                  <span *ngIf="f.submitted && f.controls.email.invalid">
+                    <span class="input-error">Email is required</span>
+                  </span>
+                </div>
+                <div class="form-group">
+                  <input type="password" [(ngModel)]="user.password" name="password" id="login-password" tabindex="2" class="form-control"
+                    required placeholder="Password">
+                  <span *ngIf="f.submitted && f.controls.password.invalid">
+                    <span class="input-error">Password is required</span>
+                  </span>
+                </div>
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="Log In">
+                    </div>
+                    <div class="col-sm-6">
+                      <a class="btn btn-login-sec" href="{{storeLoginUrl}}" name="Log_in_as_store_obdii" id="login-submit" tabindex="4">Log in as a store</a>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <form *ngIf="sForm" (ngSubmit)="signup()" role="form" #f1="ngForm">
+                <div class="form-group">
+                  <input type="text" name="fullName" [(ngModel)]="user.name" id="fullName" tabindex="1" class="form-control" required placeholder="Full Name"
+                    value="">
+                  <span *ngIf="f1.submitted && f1.controls.fullName.invalid">
+                    <span class="input-error">Name is required</span>
+                  </span>
+                </div>
+                <div class="form-group">
+                  <input type="text" name="username" [(ngModel)]="user.username" id="username" tabindex="1" class="form-control" required placeholder="Username"
+                    value="">
+                  <span *ngIf="f1.submitted && f1.controls.username.invalid">
+                    <span class="input-error">Username is required</span>
+                  </span>
+                </div>
+                <div class="form-group">
+                  <input type="email" name="signup_email" [(ngModel)]="user.email" id="signup-email" tabindex="1" class="form-control" required
+                    placeholder="Email Address" value="">
+                  <span *ngIf="f1.submitted && f1.controls.signup_email.invalid">
+                    <span class="input-error">Email is required</span>
+                  </span>
+                </div>
+                <div class="form-group">
+                  <input type="password" name="signup_password" [(ngModel)]="user.password" id="signup-password" tabindex="2" required class="form-control"
+                    placeholder="Password">
+                  <span *ngIf="f1.submitted && f1.controls.signup_password.invalid">
+                    <span class="input-error">Password is required</span>
+                  </span>
+                </div>
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                      <input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Signup">
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

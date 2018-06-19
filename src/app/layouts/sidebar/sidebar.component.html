@@ -1,0 +1,225 @@
+<div class="navbar-default sidebar" role="navigation">
+  <div class="sidebar-nav navbar-collapse">
+    <ul class="nav" id="side-menu">
+      <li class="nav-item">
+        <section class="sidebar-user-info">
+          <div class="sidebar-user-info-inner">
+            <a [routerLink]="['/home/profile']" class="user-profile">
+              <img *ngIf="user" [src-fallback]="['./assets/images/no-dp.png']" [src]="user.s3url+'?'+time" width="50" height="50" class="img-circle img-corona"
+              />
+              <span>
+                <strong *ngIf="user">{{user.providers.local.name}}</strong>
+              </span>
+            </a>
+            <span *ngIf="user">{{user.providers.local.role.name}}</span>
+            <a class="clickable" (click)="signOut()" title="Log out">
+              <i class="glyphicon glyphicon-off"></i>
+            </a>
+          </div>
+        </section>
+      </li>
+      <li [routerLinkActive]="['active']" class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
+        <a class="nav-link nav-link-collapse" [routerLink]="['/home/dashboard']">
+          <i class="glyphicon glyphicon-dashboard"></i>
+          <span class="nav-link-text">Dashboard</span>
+        </a>
+      </li>
+      <li [routerLinkActive]="['active']" *ngxPermissionsOnly="['device_view_owner']" class="nav-item" data-toggle="tooltip" data-placement="right"
+        title="Example Pages">
+        <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseDevices" data-parent="#exampleAccordion">
+          <i class="glyphicon glyphicon-hdd"></i>
+          <span class="nav-link-text">Devices</span>
+        </a>
+        <ul class="sidenav-second-level collapse" id="collapseDevices">
+          <li>
+            <a [routerLink]="['/home/devices']">
+              <i class="glyphicon glyphicon-list"></i>
+              <span class="nav-link-text">List</span>
+            </a>
+          </li>
+          <li *ngxPermissionsOnly="['device_create_owner']">
+            <a [routerLink]="['/home/devices/new']">
+              <i class="glyphicon glyphicon-plus"></i>
+              <span class="nav-link-text">Add</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li [routerLinkActive]="['active']" *ngIf="isAdmin" class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
+        <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseRoles" data-parent="#exampleAccordion">
+          <i class="fa fa-user-secret"></i>
+          <span class="nav-link-text">Roles</span>
+        </a>
+        <ul class="sidenav-second-level collapse" id="collapseRoles">
+          <li>
+            <a [routerLink]="['/home/roles']">
+              <i class="glyphicon glyphicon-list"></i>
+              <span class="nav-link-text">List</span>
+            </a>
+          </li>
+          <li>
+            <a [routerLink]="['/home/roles/new']">
+              <i class="glyphicon glyphicon-plus"></i>
+              <span class="nav-link-text">Add</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li [routerLinkActive]="['active']" *ngxPermissionsOnly="['users_edit_owner','users_create_owner','users_delete_owner','users_view_owner']"
+        class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
+        <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseUsers" data-parent="#exampleAccordion">
+          <i class="fa fa-users"></i>
+          <span class="nav-link-text">Users</span>
+        </a>
+        <ul class="sidenav-second-level collapse" id="collapseUsers">
+          <li>
+            <a [routerLink]="['/home/users']">
+              <i class="glyphicon glyphicon-list"></i>
+              <span class="nav-link-text">List</span>
+            </a>
+          </li>
+          <li *ngxPermissionsOnly="['users_create_owner']">
+            <a [routerLink]="['/home/users/new']">
+              <i class="glyphicon glyphicon-plus"></i>
+              <span class="nav-link-text">Add</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <!-- <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+        <a class="nav-link" [routerLink]="['/home/module-codes']">
+          <i class="fa fa-fw fa-file"></i>
+          <span class="nav-link-text">Module-Codes</span>
+        </a>
+      </li> -->
+      <li [routerLinkActive]="['active']" *ngxPermissionsOnly="['script_groups_edit_owner','script_groups_create_owner','script_groups_delete_owner','script_groups_view_owner']"
+        class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
+        <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseScriptsGroups" data-parent="#exampleAccordion">
+          <i class="fa fa-object-group"></i>
+          <span class="nav-link-text">Script Groups</span>
+        </a>
+        <ul class="sidenav-second-level collapse" id="collapseScriptsGroups">
+          <li>
+            <a [routerLink]="['/home/script-groups']">
+              <i class="glyphicon glyphicon-list"></i>
+              <span class="nav-link-text">List</span>
+            </a>
+          </li>
+          <li *ngxPermissionsOnly="['script_groups_create_owner']">
+            <a [routerLink]="['/home/script-groups/new']">
+              <i class="glyphicon glyphicon-plus"></i>
+              <span class="nav-link-text">Add</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li [routerLinkActive]="['active']" *ngxPermissionsOnly="['script_groups_view_owner','scripts_edit_owner','scripts_create_owner','scripts_delete_owner','scripts_view_owner']"
+        class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
+        <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseScripts" data-parent="#exampleAccordion">
+          <i class="glyphicon glyphicon-list-alt"></i>
+          <span class="nav-link-text">Scripts</span>
+        </a>
+        <ul class="sidenav-second-level collapse" id="collapseScripts">
+          <li>
+            <a [routerLink]="['/home/scripts']">
+              <i class="glyphicon glyphicon-list"></i>
+              <span class="nav-link-text">List</span>
+            </a>
+          </li>
+          <li *ngxPermissionsOnly="['scripts_create_owner']">
+            <a [routerLink]="['/home/scripts/new']">
+              <i class="glyphicon glyphicon-plus"></i>
+              <span class="nav-link-text">Add</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li [routerLinkActive]="['active']" *ngIf="isAdmin" class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
+        <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseVinDetails" data-parent="#exampleAccordion">
+          <i class="glyphicon glyphicon-credit-card"></i>
+          <span class="nav-link-text">Vin Details</span>
+        </a>
+        <ul class="sidenav-second-level collapse" id="collapseVinDetails">
+          <li>
+            <a [routerLink]="['/home/vins']">
+              <i class="glyphicon glyphicon-list"></i>
+              <span class="nav-link-text">List</span>
+            </a>
+          </li>
+          <li>
+            <a [routerLink]="['/home/vins/new']">
+              <i class="glyphicon glyphicon-plus"></i>
+              <span class="nav-link-text">Add</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li [routerLinkActive]="['active']" *ngIf="isAdmin" class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
+        <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMakes" data-parent="#exampleAccordion">
+          <i class="fa fa-car"></i>
+          <span class="nav-link-text">Vehicle Make</span>
+        </a>
+        <ul class="sidenav-second-level collapse" id="collapseMakes">
+          <li>
+            <a [routerLink]="['/home/makes']">
+              <i class="glyphicon glyphicon-list"></i>
+              <span class="nav-link-text">List</span>
+            </a>
+          </li>
+          <li>
+            <a [routerLink]="['/home/makes/new']">
+              <i class="glyphicon glyphicon-plus"></i>
+              <span class="nav-link-text">Add</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li [routerLinkActive]="['active']" *ngIf="isAdmin" class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
+        <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseModels" data-parent="#exampleAccordion">
+          <i class="fa fa-taxi"></i>
+          <span class="nav-link-text">Vehicle Model</span>
+        </a>
+        <ul class="sidenav-second-level collapse" id="collapseModels">
+          <li>
+            <a [routerLink]="['/home/models']">
+              <i class="glyphicon glyphicon-list"></i>
+              <span class="nav-link-text">List</span>
+            </a>
+          </li>
+          <li>
+            <a [routerLink]="['/home/models/new']">
+              <i class="glyphicon glyphicon-plus"></i>
+              <span class="nav-link-text">Add</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li [routerLinkActive]="['active']" *ngIf="isAdmin" class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
+        <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseYears" data-parent="#exampleAccordion">
+          <i class="fa fa-taxi"></i>
+          <span class="nav-link-text">Vehicle Year</span>
+        </a>
+        <ul class="sidenav-second-level collapse" id="collapseYears">
+          <li>
+            <a [routerLink]="['/home/years']">
+              <i class="glyphicon glyphicon-list"></i>
+              <span class="nav-link-text">List</span>
+            </a>
+          </li>
+          <li>
+            <a [routerLink]="['/home/years/new']">
+              <i class="glyphicon glyphicon-plus"></i>
+              <span class="nav-link-text">Add</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li [routerLinkActive]="['active']" *ngIf="isAdmin" class="nav-item" data-toggle="tooltip" data-placement="right" title="Settings">
+        <a [routerLink]="['/home/settings']">
+          <i class="fa fa-cog"></i>
+          <span class="nav-link-text">Settings</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

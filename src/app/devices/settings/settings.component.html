@@ -1,0 +1,119 @@
+<div *ngIf="allowedToRun">
+  <div class="alert alert-danger">
+    <strong>Alert!</strong> {{allowedToRun}}
+  </div>
+</div>
+<div *ngIf="reboot && device.connected >= 1">
+  <div class="alert alert-danger">
+    {{rebootMsg}}
+  </div>
+</div>
+<accordion [closeOthers]="true" *ngIf="allowedToRun == '' && !reboot ">
+  <accordion-group>
+    <div accordion-heading class="clearfix">
+
+      Device Name :
+      <b>
+        {{device.nickname}}
+      </b>
+      <div class="float-right pull-right">
+        Serial Number :
+        <b>
+          {{device.client_dev_no}}
+          <span class="fa fa-wifi" [ngClass]="{'wificonnected' : device.connected <=4, 'wifinotconnected' : !device.connected }"></span>
+        </b>
+      </div>
+    </div>
+    This content is straight in the template.
+  </accordion-group>
+  <accordion-group [isOpen]="true" (isOpenChange)="toggleAccordian($event,'network')">
+    <div accordion-heading class="clearfix">
+      Network :
+      <b>
+        <span *ngIf="device.connected<=4" class="glyphicon glyphicon-signal" aria-hidden="true"></span>
+        <span *ngIf="device.connected==5" class="fab fa-usb" aria-hidden="true"></span>
+        {{ device.connected==5 ? 'USB' : (selectedWifi.ssid)? selectedWifi.ssid : 'No wifi connected!'}}
+      </b>
+      <span class="float-right pull-right">IP :
+        <b>{{selectedWifi.ip || 'USB'}}</b>
+      </span>
+    </div>
+    <div class="row col-md-12" *ngIf="searching || pleaseWait">
+      <span style="text-align: 'center'"> searching for wifi networks...</span>
+      <span class="fa fa-spinner fa-spin"></span>
+    </div>
+    <div class="row" *ngIf="device.connected <=4">
+      <div class="col-md-6">
+        <span style="float: left;font-size: 17px;">Wifi :</span>
+        <ui-switch size="small" [checked]="wifiOnOff" [disabled]="true" color="{{wifiOnOffColor? 'green' : 'red' }}"></ui-switch>
+      </div>
+      <div class="col-md-6">
+        <div class="pull-right">
+          <button type="button" (click)="rebootPod()" class="btn btn-default">POD Reboot</button>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="device.connected == 5" class="row">
+      USB connected!
+    </div>
+    <div *ngIf="device.connected">
+      <accordion [closeOthers]="true" *ngFor="let wifi of wifis">
+        <accordion-group [isOpen]="false">
+          <div accordion-heading class="clearfix">
+            <span class="fa fa-wifi" aria-hidden="true" [ngClass]="{'wificonnected' : wifi.ssid == selectedWifi.ssid, 'wifinotconnected': wifi.ssid !== selectedWifi.ssid }"></span> {{wifi.ssid}}
+          </div>
+          <div *ngIf="(selectedWifi.ssid !== wifi.ssid)">
+            <div class="form-group">
+              <input type="password" (input)="removemsg = true;" class="form-control" [(ngModel)]="wifi.password" placeholder="Password"
+              />
+
+              <div class="panel-footer">
+                <button type="button" class="btn btn-primary" [disabled]="!wifi.password" (click)="connectme(wifi)">Connect</button>
+                <button type="button" class="btn btn-danger">Cancel</button>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="(wifi.wificonnected == true || selectedWifi.ssid == wifi.ssid )&& !removemsg">
+            <div class="alert alert-success">
+              Wifi is Configured ...
+              <span (click)="removeWifi(wifi)" class="float-right pull-right" *ngIf="wifi.configured">
+                <span class="fa fa-remove"></span>
+              </span>
+            </div>
+          </div>
+          <div *ngIf="(selectedWifi.wificonnected == false )&& !removemsg ">
+            <div class="alert alert-danger">
+              <strong>Error!</strong> Invalid Password ...
+            </div>
+          </div>
+        </accordion-group>
+      </accordion>
+    </div>
+  </accordion-group>
+  <accordion-group (isOpenChange)="toggleAccordian($event,'about')">
+    <div accordion-heading class="clearfix">
+      About
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        OS Version : {{osVersionName}}
+        <br> Application Name : {{applicationVersionName}}
+      </div>
+      <div class="col-md-6">
+        <div class="pull-right">
+          <a class="btn icon-btn btn-primary" (click)="checkForUpdate(settings.osVersion)">
+            <span class="glyphicon btn-glyphicon glyphicon-refresh img-circle text-primary"></span>{{settings.osVersionTitle}}
+          </a>
+          <br>
+          <br>
+          <a class="btn icon-btn btn-primary" (click)="checkForUpdate(settings.applicationVersion)">
+            <span class="glyphicon btn-glyphicon glyphicon-refresh img-circle text-primary"></span>{{settings.applicationVersionTitle}}
+          </a>
+          <div style="color:red">Please upgrade first OS then application </div>
+          <div style="color:green" *ngIf="applicationVersionUpdateName">Changed Version : {{applicationVersionUpdateName}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </accordion-group>
+</accordion>

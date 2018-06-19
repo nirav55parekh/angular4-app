@@ -1,0 +1,10 @@
+<ol class="breadcrumb">
+  <li *ngFor="let item of url; let first = first; let last = last" [ngClass]="{'active': last}">
+    <a *ngIf="!last; else lastUrl" [routerLink]="item.urlLink">
+      <span> {{item.name}} </span>
+    </a>
+    <ng-template #lastUrl>
+      <span> {{item.name}} </span>
+    </ng-template>
+  </li>
+</ol>

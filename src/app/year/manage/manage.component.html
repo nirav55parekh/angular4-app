@@ -1,0 +1,77 @@
+<form (ngSubmit)="onSubmit(f)" #f="ngForm">
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <span>{{title}}</span>
+    </div>
+    <div class="panel-body">
+      <div class="form-group row">
+        <label for="name" class="col-sm-2 col-form-label">Year :</label>
+        <div class="col-sm-10">
+          <input type="text" bsDaterangepicker #dpr="bsDaterangepicker" autocomplete="off" name="name" [(ngModel)]="year.name" class="form-control"
+            required="required">
+          <span *ngIf="f.submitted && f.controls.name.invalid">
+            <span class="input-error">Year is required</span>
+          </span>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="name" class="col-sm-2 col-form-label">Upload year model image :</label>
+        <div class="row col-sm-10">
+          <div class="col-md-5">
+            <input type="file" name="file" (change)="fileChange($event)" name="s3url" class="form-control">
+          </div>
+          <div class="col-md-5">
+            <img thumbnail [image]="file" #fileInput [src]="year.s3url" *ngIf="editMode" [src-fallback]="['./assets/images/default-img.png']"
+              height="200px" width="200px">
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="name" class="col-sm-2 col-form-label">Make :</label>
+        <div class="col-sm-10">
+          <!-- <select [(ngModel)]="year.make_id" (ngModelChange)="onMakeChange($event)" name="makeName" class="form-control" required>
+            <option *ngFor="let m of makes" [value]="m.id" [selected]="year.make_id == m.id">{{m.name}}</option>
+          </select> -->
+          <ng-select [items]="makes" [clearable]="false" name="make" (ngModelChange)="onMakeChange($event)" bindLabel="name" bindValue="id"
+            placeholder="Select make" [(ngModel)]="year.make_id">
+          </ng-select>
+          <span *ngIf="f.submitted && f.controls.make.invalid">
+            <span class="input-error">Please select make</span>
+          </span>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="name" class="col-sm-2 col-form-label">Model :</label>
+        <div class="col-sm-10">
+          <!-- <select [(ngModel)]="year.model_id" name="modelName" class="form-control" required>
+            <option *ngFor="let m of models" [value]="year.model_id" [selected]="year.model_id == m.id">{{m.name}}</option>
+          </select> -->
+          <ng-select [items]="models" [clearable]="false" name="modelName" bindLabel="name" bindValue="id" placeholder="Select model"
+            [(ngModel)]="year.model_id">
+          </ng-select>
+          <span *ngIf="f.submitted && f.controls.modelName.invalid">
+            <span class="input-error">Please select model</span>
+          </span>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="name" class="col-sm-2 col-form-label">Programs :</label>
+        <div class="col-sm-10">
+          <ng-select [items]="scripts" bindLabel="name" [multiple]="true" name="makeName" [(ngModel)]="selectedPrograms" required>
+          </ng-select>
+        </div>
+      </div>
+    </div>
+    <div class="panel-footer">
+      <button type="submit" class="btn btn-success">
+        <span class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span> Save</button>
+      <button type="button" class="btn btn-default" [routerLink]="['/home/years']">
+        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel</button>
+    </div>
+  </div>
+  <div class="alert alert-danger alert-dismissable" *ngIf="errorMessage">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Error!</strong> {{errorMessage}}
+  </div>
+</form>

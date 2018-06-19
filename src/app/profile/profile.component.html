@@ -1,0 +1,113 @@
+<accordion [closeOthers]="true">
+  <accordion-group [isOpen]="true">
+    <div accordion-heading class="clearfix">
+      Profile
+    </div>
+    <form name="userForm" (ngSubmit)="onSubmit(f)" #f="ngForm">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-3 col-lg-3 " align="center">
+            <input class="clickable" #myImage (change)="fileChange($event)" type="file" name="file" style="visibility:hidden" />
+            <img thumbnail [image]="file" ng2FileSelect #fileInput (click)="onImageClick()" [src-fallback]="['./../assets/images/no-dp.png']"
+              [src]="user.s3url+'?'+time" class="user-img-circle clickable">
+          </div>
+          <div class=" col-md-9 col-lg-9 ">
+            <table class="table table-user-information">
+              <tbody>
+                <tr>
+                  <td>Username:</td>
+                  <td>
+                    <span>{{user.providers.local.username}}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Email:</td>
+                  <td>
+                    <span>{{user.email}}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Phone:</td>
+                  <td>
+                    <input type="text" name="phone" [(ngModel)]="user.providers.local.phoneNumber" class="form-control">
+                  </td>
+                </tr>
+                <tr>
+                  <td>Country:</td>
+                  <td>
+                    <ng-select [items]="countries" [(ngModel)]="user.providers.local.countryId" [clearable]="false" name="country" bindLabel="name"
+                      bindValue="id" placeholder="Select Country">
+                    </ng-select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>State:</td>
+                  <td>
+                    <ng-select [items]="states" [clearable]="false" [(ngModel)]="user.providers.local.stateId" name="state" bindLabel="name"
+                      bindValue="id" placeholder="Select State">
+                    </ng-select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>City:</td>
+                  <td>
+                    <ng-select [items]="cities" [clearable]="false" name="city" [(ngModel)]="user.providers.local.cityId" bindLabel="name" bindValue="id"
+                      placeholder="Select City">
+                    </ng-select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Zipcode:</td>
+                  <td>
+                    <input type="text" name="zipcode" [(ngModel)]="user.providers.local.zipcode" class="form-control">
+                  </td>
+                </tr>
+                <tr>
+                  <td>Address:</td>
+                  <td>
+                    <textarea rows="4" name="address" [(ngModel)]="user.providers.local.address" class="form-control"></textarea>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="panel-footer">
+        <button type="submit" class="btn btn-success">
+          <span class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span> Save</button>
+        <button type="button" class="btn btn-default" [routerLink]="['/home/dashboard']">
+          <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel</button>
+      </div>
+    </form>
+  </accordion-group>
+  <accordion-group>
+    <div accordion-heading class="clearfix">
+      Change Password
+    </div>
+    <form name="userPasswordForm" (ngSubmit)="onSubmit(f)" #f1="ngForm">
+      <div class="panel-body">
+        <div class="row">
+          <div class=" col-md-12 col-lg-12 ">
+            <div class="col-md-12">
+              <div class="form-group">
+                <input placeholder="Password" type="password" [(ngModel)]="changePassword.password" name="password" id="password" class="form-control">
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <input type="password" placeholder="Confirm Password" [(ngModel)]="confirmPassword" name="password" id="password" class="form-control">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-footer">
+        <button [disabled]="changePassword.password && changePassword.password!==confirmPassword" type="submit" class="btn btn-success">
+          <span class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span> Save</button>
+        <button type="button" class="btn btn-default" [routerLink]="['/home/dashboard']">
+          <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel</button>
+      </div>
+    </form>
+  </accordion-group>
+</accordion>

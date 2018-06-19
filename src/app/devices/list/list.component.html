@@ -1,0 +1,476 @@
+<div class="well well-sm">
+    <div class="btn-group">
+        <a id="list" class="btn btn-default btn-sm" [ngClass]="{'active': type=='list'}" (click)="type='list';">
+            <span class="glyphicon glyphicon-th-list">
+            </span>List</a>
+        <a id="grid" class="btn btn-default btn-sm" [ngClass]="{'active': type=='grid'}" (click)="type='grid';">
+            <span class="glyphicon glyphicon-th"></span>Grid</a>
+    </div>
+</div>
+<div class="col-md-12">
+    <div *ngIf="devices.length" id="products" class="row list-group">
+        <div *ngFor="let device of devices; let i = index">
+            <div class="item  col-xs-4 col-lg-4" [ngClass]="{'green' : checkconnected(device),'grid-group-item': type=='grid' ,'list-group-item': type=='list'}">
+                <div class="thumbnail panel-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div *ngIf="device.vinDetails && device.vinDetails.url else novinimg">
+                                <img [width]="(type=='list')? '270' : '100'" [src-fallback]="['./assets/images/cardefault.jpg']" [src]="device.vinDetails.url"
+                                    class="group list-group-image" />
+                            </div>
+                            <ng-template #novinimg>
+                                <img [height]="(type=='list')? '200' : '150'" src="./assets/images/cardefault.jpg" class="group list-group-image" />
+                            </ng-template>
+                            <div *ngIf="device.vinDetails" style="font-weight: bold;font-size: 16px;color:black;margin-left: 5%;float:left;">
+                                {{device.vinDetails.vinName}}
+                            </div>
+                            <div *ngIf="device.vinDetails">
+
+                                <div class="icon-collection" style='float: "left"; width: "82%";' *ngIf="device.vin !== 'false'">
+                                    <div class="fontawesome-icon-list" *ngIf="type=='grid'">
+                                        <div class="fa-hover">
+                                            <div class="icon-str">
+                                                <i class="fa fa-car"></i>
+                                                <span>{{device.vin}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="type=='list'" class="input-group col-md-10">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-car"></i>
+                                        </div>
+                                        <input type="text" autocomplete="off" name="infovin" [disabled]="true" [(ngModel)]="device.vin" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="caption col-md-9">
+                            <div class="col-md-3">
+                                <h4 *ngIf="type=='list';else nickname" class="group inner list-group-item-heading">
+                                    {{(device.nickname + '('+device.client_dev_no + ')') }}
+                                </h4>
+                                <ng-template #nickname>
+                                    {{(device.nickname + '('+device.client_dev_no + ')') | shorten: 15 }}
+                                </ng-template>
+                                <span *ngIf="device.session">
+                                    <p *ngIf="type=='list';else sessionName" class="group inner list-group-item-text label label-danger">{{device.session | shorten: 5}}
+                                    </p>
+                                </span>
+                                <ng-template #sessionName>
+                                    <span *ngIf="device.session">
+                                        <p class="group inner list-group-item-text label label-danger"> {{device.session | shorten: 25 }}</p>
+                                    </span>
+                                </ng-template>
+                            </div>
+                            <div class="col-md-9" style="padding-bottom: 12px;">
+                                <div class="col-sm-6">
+                                    <ng-template [ngxPermissionsOnly]="['device_view_admin']" [ngxPermissionsOnlyElse]="elseViewBlock">
+                                        <a class="btn btn-sm btn-info" [routerLink]="['/home/devices/view',device.id]">
+                                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                                        </a>
+                                    </ng-template>
+                                    <ng-template #elseViewBlock>
+                                        <span *ngxPermissionsOnly="['device_view_owner']">
+                                            <a *ngIf="device.created_by == userId || checkForViewEditDelete(device)" class="btn btn-sm btn-info" [routerLink]="['/home/devices/view',device.id]">
+                                                <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                                            </a>
+                                        </span>
+                                    </ng-template>
+
+                                    <ng-template [ngxPermissionsOnly]="['device_edit_admin']" [ngxPermissionsOnlyElse]="elseEditBlock">
+                                        <button [routerLink]="['/home/devices/edit',device.id]" class="btn btn-sm btn-warning">
+                                            <i class="glyphicon glyphicon-pencil"></i>
+                                        </button>
+                                    </ng-template>
+                                    <ng-template #elseEditBlock>
+                                        <span *ngxPermissionsOnly="['device_edit_owner']">
+                                            <button *ngIf="device.created_by == userId || checkForViewEditDelete(device)" [routerLink]="['/home/devices/edit',device.id]"
+                                                class="btn btn-sm btn-warning">
+                                                <i class="glyphicon glyphicon-pencil"></i>
+                                            </button>
+                                        </span>
+                                    </ng-template>
+
+                                    <ng-template [ngxPermissionsOnly]="['device_delete_admin']" [ngxPermissionsOnlyElse]="elseDeleteBlock">
+                                        <button class="btn btn-sm btn-danger" (click)="deleteDevice(device.id,device)">
+                                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                        </button>
+                                    </ng-template>
+                                    <ng-template #elseDeleteBlock>
+                                        <span *ngxPermissionsOnly="['device_delete_owner']">
+                                            <button *ngIf="device.created_by == userId || checkForViewEditDelete(device)" (click)="deleteDevice(device.id,device)" class="btn btn-sm btn-danger">
+                                                <i class="glyphicon glyphicon-remove"></i>
+                                            </button>
+                                        </span>
+                                    </ng-template>
+                                    <button *ngIf="device.connected" [routerLink]="['/home/devices/settings',device.id]" class="btn btn-sm btn-primary">
+                                        <i class="glyphicon glyphicon-cog"></i>
+                                    </button>
+                                    <button *ngIf="deviceSelected.id == device.id && showLogsAction" (click)="openModelLogs(template1)" class="btn btn-success btn-icon btn-sm">
+                                        <i class="glyphicon glyphicon-list"></i>
+                                    </button>
+                                    <button *ngIf="device.deviceconnectedOnce && type!=='grid'" (click)="runmakemodelyear(device, i,template)" class="btn btn-primary btn-sm btn-icon icon-left">
+                                        <i class="fa fa-cog"></i>
+                                        <span>Model</span>
+                                    </button>
+                                </div>
+                                <div class="col-sm-6" *ngIf="device.deviceconnectedOnce && type!=='grid'">
+                                    <div class="col-sm-12" *ngIf="device.scriptlist">
+                                        <ng-select id="scriptrunselection_{{device.id}}" [items]="scriptlist" [clearable]="false" name="scriptlist" bindLabel="name"
+                                            placeholder="Select script" [(ngModel)]="device.scriptSelected">
+                                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                                {{item.name}} -
+                                                <i class="fa fa-money">{{item.credit}}</i>
+                                            </ng-template>
+                                        </ng-select>
+                                    </div>
+                                    <div class="col-sm-3" *ngIf="device.scriptlist && !device.takeControl">
+                                        <button (click)="runProgram(device.id, device, i)" class="btn btn-warning btn-icon btn-sm">
+                                            <i class="fa-rocket"></i>
+                                            <span>Launch</span>
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-3" *ngIf="device.scriptlist && device.takeControl">
+                                        <button (click)="runProgram(device.id, device, i)" class="btn btn-red btn-icon btn-sm">
+                                            <i class="fa-remove"></i>
+                                            <span>Take Control</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+
+                                <div class="col-sm-3">
+                                    <div class="xe-icon">
+                                        <a style="display:none;" class="btn btn-info btn-sm btn-icon icon-left">
+                                            Checking.....!!!
+                                        </a>
+
+                                        <div class="wifi-symbol">
+                                            <div *ngIf="device.connected4" class="wifi-circle first"></div>
+                                            <div *ngIf="!device.connected4" class="wifi-circle first disabled"></div>
+
+                                            <div *ngIf="!device.connected3" class="wifi-circle second disabled"></div>
+                                            <div *ngIf="device.connected3" class="wifi-circle second"></div>
+
+                                            <div *ngIf="!device.connected2" class="wifi-circle third disabled"></div>
+                                            <div *ngIf="device.connected2" class="wifi-circle third"></div>
+
+                                            <div *ngIf="!device.connected1" class="wifi-circle fourth disabled"></div>
+                                            <div *ngIf="device.connected1" class="wifi-circle fourth">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-7" *ngIf="device.moreinfo">
+                                    <div class="imgmap_css_container_cardata" *ngIf="checkconnected(device) && type!=='grid' " style="margin-bottom: 15px;">
+                                        <div *ngFor="let moreinfo of device.moreinfo| keys">
+                                            <a class="{{moreinfo.key}} cordinate_gen_new cordinate_gen_active_new" alt="" href="" target="">
+                                                <em>{{moreinfo.value}}</em>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #template>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Make/Model/Year- {{deviceSelected.client_dev_no}} - {{selectedMakeModelYear}}</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal ng-pristine ng-valid">
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="client_sw_no">Make:</label>
+                <div class="col-sm-10">
+                    <ng-select [items]="makes" [clearable]="false" name="make" (ngModelChange)="getVinModel($event)" bindLabel="name" placeholder="Select make"
+                        [(ngModel)]="vinmakeSelected">
+                    </ng-select>
+                </div>
+            </div>
+            <div class="form-group-separator"></div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="client_sw_no">Model:</label>
+                <div class="col-sm-10">
+                    <ng-select [items]="models" [clearable]="false" name="model" (ngModelChange)="getVinYear($event)" bindLabel="name" placeholder="Select model"
+                        [(ngModel)]="vinmodelSelected">
+                    </ng-select>
+                </div>
+            </div>
+            <div class="form-group-separator"></div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="client_sw_no">Year:</label>
+                <div class="col-sm-10">
+                    <ng-select [items]="years" [clearable]="false" name="year" (ngModelChange)="executeForScript($event)" bindLabel="name" placeholder="Select year"
+                        [(ngModel)]="vinyearSelected">
+                    </ng-select>
+                </div>
+            </div>
+
+            <div class="form-group-separator" *ngIf="scriptlist"></div>
+            <div class="form-group" *ngIf="scriptlist">
+                <label class="col-sm-2 control-label" for="client_sw_no">Allowed Scripts:</label>
+                <div class="col-sm-10">
+                    <ul>
+                        <div *ngFor="let script of scriptlist">
+                            <li>
+                                {{script.name}}
+                            </li>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </form>
+
+
+    </div>
+</ng-template>
+
+<ng-template #template1>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Logs -{{deviceSelected.client_dev_no}}</h4>
+
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <div style="color: red;font-size: 12px;width: 100%;float: left;">
+            To prevent multiple script run on same device, please click 'Release Device' after script is completed.
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="panel panel-default">
+                    <div class="panel-body panel-border" *ngIf="scanning">
+                        <div class="row">
+                            <div class="col-sm-12 device_blocks more_height">
+                                <div class="col-md-12" *ngFor="let scan of scanning; let i = index">
+
+                                    <div class="alert alert-info alert-dismissable" role="alert" type="info" close="alert_2_hide = true" *ngIf="alert_2_hide == null">
+                                        <div>
+                                            <span [innerHTML]="scan" [ngClass]="{'ng-scope blink_me': i == 0}">
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="panel-heading" *ngIf="deviceSelected.errors">
+                        <h3 class="panel-title">Device - Summary</h3>
+                    </div>
+                    <div class="panel-body panel-border" *ngIf="deviceSelected.errors">
+                        <div class="row">
+                            <div class="col-sm-12 device_blocks">
+                                <div class="col-md-2" *ngFor="let modulesE of deviceSelected.errors | module" style="cursor: pointer;">
+                                    <div class="alert ng-isolate-scope alert-info alert-dismissable" role="alert" type="info" close="alert_2_hide = true" *ngIf="alert_2_hide == null">
+                                        <div>
+                                            <span (click)="showLogs(modulesE, modulesE.module)"> {{modulesE.module}} - {{modulesE.length}}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel-heading" *ngIf="deviceSelected.errors">
+                        <h3 class="panel-title">Device - Map
+                            <a *ngIf="deviceSelected.errors" class="btn btn-orange btn-sm btn-icon icon-left" (click)="refreshState()">
+                                Re-Scan</a>
+                        </h3>
+                    </div>
+                    <div class="panel-body panel-border" *ngIf="deviceSelected.errors">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="imgmap_css_container" id="imgmap201744111422" *ngIf="deviceSelected.errors">
+                                    <strong>Topology</strong>
+                                    <div *ngFor="let module of modules">
+                                        <div *ngIf="!deviceSelected.errors[module].length">
+                                            <a class="{{module}} cordinate_gen cordinate_gen_inactive" alt="" title="{{module}}" href="" target="">
+                                                <em></em>
+                                            </a>
+                                        </div>
+                                        <div *ngIf="device.errors[module].length">
+                                            <a (click)="showLogs(deviceSelected.errors[module],module)" class="{{module}} cordinate_gen cordinate_gen_active" alt=""
+                                                title="{{module}}" href="" target="">
+                                                <em></em>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <!--                            <div *ngIf="!device.errors.PCM.length">
+                                                <a (click)="showLogs(device.errors.PCM, 'PCM')" class="{{module}}"  alt="" title="" href="" target="" ><em></em></a>
+                                            </div>
+                                            <div *ngIf="device.errors.PCM.length">
+                                                <a   alt="" title="" href="" target="" ><em></em></a>
+                                            </div>
+                
+                                            <div *ngIf="!device.errors.ABS.length">
+                                                <a (click)="showLogs(device.errors.ABS, 'ABS')" style="position: absolute;top: 847px;left: 265px;width: 42px;height: 28px;background-color: red;opacity: 0.5;"  alt="" title="" href="" target="" ><em></em></a>
+                                            </div>
+                
+                                            <div *ngIf="device.errors.ABS.length">
+                                                <a style="position: absolute;top: 847px;left: 265px;width: 42px;height: 28px;background-color: yellow;opacity: 0.5;"  alt="" title="" href="" target="" ><em></em></a>
+                                            </div>-->
+                                </div>
+                                <div class="error_details">
+                                    <div class="error_details_back" style="margin-top: 12px;display: none;">
+                                        <div class="col-sm-4">
+                                            <a (click)="hideLogs(deviceSelected.errors.PCM)" class="error_details_back btn btn-orange btn-sm btn-icon icon-left">
+                                                BACK
+                                            </a>
+                                        </div>
+                                        <div class="col-sm-4"></div>
+                                        <div class="col-sm-4">
+                                            <select id="multiselect" class="form-control" multiple ng-model="selectedStatus" ng-options="status for status in statuses">
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="error_details_content" style="display: none;">
+                                        <h3 class="panel-title">Module selected : {{selectedModule.name}}</h3>
+                                        <BR>
+                                        <table class="table table-model-2 table-hover">
+                                            <tr>
+                                                <th>
+                                                    #
+                                                </th>
+                                                <th>
+                                                    Code
+                                                </th>
+                                                <th>
+                                                    Title
+                                                </th>
+                                                <th>
+                                                    Description
+                                                </th>
+                                                <th>
+                                                    Status
+                                                </th>
+                                            </tr>
+                                            <ng-container *ngIf="selectedStatus.length == 0 || compareStatus('statusNull')">
+                                                <tr *ngFor="let codesin of selectedModule.logs; let i = index">
+                                                    <td>
+                                                        {{i+1}}
+                                                    </td>
+                                                    <td>
+                                                        <span *ngFor="let status of codesin|module">
+                                                            {{status.module}}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span *ngFor="let status of codesin|module">
+                                                            <span *ngIf="codes[status.module].title">
+                                                                {{codes[status.module].title}}
+                                                            </span>
+
+                                                            <span *ngIf="!codes[status.module].title">
+                                                                No Title found
+                                                            </span>
+                                                        </span>
+
+                                                    </td>
+                                                    <td>
+                                                        <span *ngFor="let status of codesin|module">
+                                                            <span *ngIf="codes[status.module].description">
+                                                                {{codes[status.module].description}}
+                                                            </span>
+
+                                                            <span *ngIf="!codes[status.module].description">
+                                                                No Description found
+                                                            </span>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span *ngFor="let status of codesin|module">
+                                                            {{status}}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </ng-container>
+                                            <ng-container *ngIf="selectedStatus.length && !compareStatus(statusNull)">
+                                                <tr *ngFor="let codesin of selectedModule.logs | module ; let i = index">
+                                                    <ng-container ng-if="compareStatus(status)">
+                                                        <td *ngFor="let status of codesin|module">
+                                                            {{codesin.module+1}}
+                                                        </td>
+                                                    </ng-container>
+                                                    <ng-container ng-if="compareStatus(status)">
+                                                        <td *ngFor="let status of codesin|module">
+                                                            <span *ngFor="let status of codesin|module">
+                                                                {{status.module}}
+                                                            </span>
+                                                        </td>
+                                                    </ng-container>
+                                                    <ng-container ng-if="compareStatus(status)">
+                                                        <td *ngFor="let status of codesin|module">
+
+                                                            <span *ngFor="let status of codesin|module">
+                                                                <span *ngIf="codes[status.module].title">
+                                                                    {{codes[status.module].title}}
+                                                                </span>
+
+                                                                <span *ngIf="!codes[status.module].title">
+                                                                    No Title found
+                                                                </span>
+                                                            </span>
+
+                                                        </td>
+                                                    </ng-container>
+                                                    <ng-container ng-if="compareStatus(status)">
+                                                        <td *ngFor="let status of codesin|module">
+                                                            <span *ngFor="let status of codesin|module">
+                                                                <span *ngIf="codes[status.module].description">
+                                                                    {{codes[status.module].description}}
+                                                                </span>
+
+                                                                <span *ngIf="!codes[status.module].description">
+                                                                    No Description found
+                                                                </span>
+                                                            </span>
+                                                        </td>
+                                                    </ng-container>
+                                                    <ng-container ng-if="compareStatus(status)">
+                                                        <td *ngFor="let status of codesin|module">
+                                                            <span *ngFor="let status of codesin|module">
+                                                                {{status}}
+                                                            </span>
+                                                        </td>
+                                                    </ng-container>
+                                                </tr>
+                                            </ng-container>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="error_details_back pull-right" style="margin-top: 12px ;">
+                    <button *ngIf="deviceSelected.pid" (click)="stopProgram(deviceSelected.id, deviceSelected)" type="button" class="btn btn-warning btn-sm btn-icon icon-left"
+                        title="You are release device and stoping procedure...">Release Device</button>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</ng-template>

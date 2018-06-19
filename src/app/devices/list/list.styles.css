@@ -1,0 +1,633 @@
+.btn-circle {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    padding: 6px 0;
+    font-size: 12px;
+    line-height: 1.428571429;
+    border-radius: 15px;
+}
+
+.wifi-off {
+    font-size: 40px;
+    color: gray;
+}
+
+.wifi-on {
+    font-size: 40px;
+    color: #47a447;
+}
+
+.glyphicon {
+    margin-right: 5px;
+}
+
+.thumbnail {
+    margin-bottom: 20px;
+    padding: 0px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+}
+
+.item.list-group-item {
+    float: none;
+    width: 100%;
+    background-color: #fff;
+    margin-bottom: 10px;
+}
+
+.item.list-group-item:nth-of-type(odd):hover,
+.item.list-group-item:hover {
+    background: gray;
+}
+
+.item.list-group-item.green:nth-of-type(odd):hover,
+.item.list-group-item.green:hover {
+    background: #47a447;
+}
+
+.item.list-group-item .list-group-image {
+    margin-right: 150px;
+}
+
+.item.list-group-item .thumbnail {
+    margin-bottom: 0px;
+}
+
+.item.list-group-item .caption {
+    padding: 9px 9px 0px 9px;
+}
+
+.item.list-group-item:nth-of-type(odd) {
+    background: #eeeeee;
+}
+
+.item.list-group-item:before,
+.item.list-group-item:after {
+    display: table;
+    content: " ";
+}
+
+.item.list-group-item img {
+    float: left;
+}
+
+.item.list-group-item:after {
+    clear: both;
+}
+
+.list-group-item-text {
+    margin: 0 0 11px;
+}
+
+.icon-collection .fontawesome-icon-list .fa-hover {
+    width: 115%;
+}
+
+.modal-dialog {
+    width: 70%;
+}
+
+.wifi-symbol [foo],
+.wifi-symbol {
+    margin-left: 79px;
+}
+
+.wifi-symbol {
+    display: none;
+}
+
+.wifi-symbol [foo],
+.wifi-symbol {
+    display: block;
+    position: absolute;
+    top: 50%;
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    margin-top: -65.25px;
+    -ms-transform: rotate(-45deg) translate(-100px);
+    -moz-transform: rotate(-45deg) translate(-100px);
+    -o-transform: rotate(-45deg) translate(-100px);
+    -webkit-transform: rotate(-45deg) translate(-100px);
+    transform: rotate(-45deg) translate(-100px);
+}
+
+.wifi-symbol .wifi-circle {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    display: block;
+    width: 100%;
+    height: 100%;
+    font-size: 3.57143px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    border-color: #47a447;
+    border-style: solid;
+    border-width: 1em 1em 0 0;
+    -webkit-border-radius: 0 100% 0 0;
+    border-radius: 0 100% 0 0;
+    opacity: 0.8;
+    -o-animation: wifianimation 3s infinite;
+    -moz-animation: wifianimation 3s infinite;
+    -webkit-animation: wifianimation 3s infinite;
+    animation: wifianimation 3s infinite;
+}
+
+.wifi-symbol .wifi-circle.first {
+    -o-animation-delay: 800ms;
+    -moz-animation-delay: 800ms;
+    -webkit-animation-delay: 800ms;
+    animation-delay: 800ms;
+}
+
+.wifi-symbol .wifi-circle.first.disabled {
+    opacity: 1;
+    border-color: gray;
+    -o-animation: none;
+    -moz-animation: none;
+    -webkit-animation: none;
+    animation: none;
+}
+
+.wifi-symbol .wifi-circle.second.disabled {
+    width: 5em;
+    height: 5em;
+    opacity: 1;
+    border-color: gray;
+    -o-animation: none;
+    -moz-animation: none;
+    -webkit-animation: none;
+    animation: none;
+}
+
+.wifi-symbol .wifi-circle.second {
+    width: 5em;
+    height: 5em;
+    -o-animation-delay: 400ms;
+    -moz-animation-delay: 400ms;
+    -webkit-animation-delay: 400ms;
+    animation-delay: 400ms;
+}
+
+.wifi-symbol .wifi-circle.third.disabled {
+    width: 3em;
+    height: 3em;
+    opacity: 1;
+    border-color: gray;
+    -o-animation: none;
+    -moz-animation: none;
+    -webkit-animation: none;
+    animation: none;
+}
+
+.wifi-symbol .wifi-circle.third {
+    width: 3em;
+    height: 3em;
+}
+
+.wifi-symbol .wifi-circle.fourth.disabled {
+    width: 1em;
+    height: 1em;
+    opacity: 1;
+    background-color: gray;
+    border-color: gray;
+    -o-animation: none;
+    -moz-animation: none;
+    -webkit-animation: none;
+    animation: none;
+}
+
+.wifi-symbol .wifi-circle.fourth {
+    width: 1em;
+    height: 1em;
+    opacity: 1;
+    background-color: #47a447;
+    -o-animation: none;
+    -moz-animation: none;
+    -webkit-animation: none;
+    animation: none;
+}
+
+@-o-keyframes wifianimation {
+    0% {
+        opacity: 0.4;
+    }
+    5% {
+        opactiy: 1;
+    }
+    6% {
+        opactiy: 0.1;
+    }
+    100% {
+        opactiy: 0.1;
+    }
+}
+
+@-moz-keyframes wifianimation {
+    0% {
+        opacity: 0.4;
+    }
+    5% {
+        opactiy: 1;
+    }
+    6% {
+        opactiy: 0.1;
+    }
+    100% {
+        opactiy: 0.1;
+    }
+}
+
+@-webkit-keyframes wifianimation {
+    0% {
+        opacity: 0.4;
+    }
+    5% {
+        opactiy: 1;
+    }
+    6% {
+        opactiy: 0.1;
+    }
+    100% {
+        opactiy: 0.1;
+    }
+}
+
+.deviceImage {
+    float: left;
+    width: 270px;
+    text-align: center;
+    margin: 6px;
+}
+
+.imgmap_css_container_cardata {
+    background-image: url('../../../assets/images/cardata.png');
+    background-repeat: no-repeat;
+    width: 160px;
+    height: 160px;
+    color: red;
+}
+
+.blink_me {
+    -webkit-animation-name: blinker;
+    -webkit-animation-duration: 3s;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-iteration-count: infinite;
+    -moz-animation-name: blinker;
+    -moz-animation-duration: 3s;
+    -moz-animation-timing-function: linear;
+    -moz-animation-iteration-count: infinite;
+    animation-name: blinker;
+    animation-duration: 3s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+@-moz-keyframes blinker {
+    0% {
+        opacity: 1.0;
+    }
+    50% {
+        opacity: 0.0;
+    }
+    100% {
+        opacity: 1.0;
+    }
+}
+
+@-webkit-keyframes blinker {
+    0% {
+        opacity: 1.0;
+    }
+    50% {
+        opacity: 0.0;
+    }
+    100% {
+        opacity: 1.0;
+    }
+}
+
+@keyframes blinker {
+    0% {
+        opacity: 1.0;
+    }
+    50% {
+        opacity: 0.0;
+    }
+    100% {
+        opacity: 1.0;
+    }
+}
+
+.device_blocks {
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.more_height {
+    max-height: 450px !important;
+}
+
+.cordinate_gen_new {
+    position: absolute;
+    width: 100%;
+    height: 28px;
+    opacity: 0.5;
+    color: rgb(8, 30, 213);
+    font-weight: bolder;
+}
+
+.LF {
+    top: 0;
+    left: 25px;
+}
+
+.RF {
+    top: 0;
+    left: 116px;
+}
+
+.LR {
+    top: 100px;
+    left: 25px;
+}
+
+.RR {
+    top: 100px;
+    left: 116px;
+}
+
+.ODOMETER {
+    top: 130px;
+    left: 53px;
+}
+
+.cordinate_gen_active_new {
+    /*background-color: yellow;*/
+}
+
+.ACC {
+    top: 822px;
+    left: 240px;
+}
+
+.VES3 {
+    top: 880px;
+    left: 427px;
+}
+
+.TIPMCGW {
+    top: 751px;
+    left: 663px;
+}
+
+.TPM {
+    top: 725px;
+    left: 718px;
+}
+
+.DTCM {
+    top: 725px;
+    left: 801px;
+}
+
+.WCM {
+    top: 639px;
+    left: 863px;
+}
+
+.SDARV {
+    top: 601px;
+    left: 937px;
+}
+
+.AMP {
+    top: 24px;
+    left: 848px;
+}
+
+.HFM {
+    top: 39px;
+    left: 789px;
+}
+
+.DMFL {
+    top: 39px;
+    left: 703px;
+}
+
+.PLGM {
+    top: 228px;
+    left: 447px;
+}
+
+.MSMD {
+    top: 195px;
+    left: 493px;
+}
+
+.SAS {
+    top: 351px;
+    left: 293px;
+}
+
+.imgmap_css_container {
+    background-image: url('../../../assets/images/full_car.jpg');
+    width: 518px;
+    height: 400px;
+    overflow: scroll;
+}
+
+.blink_me {
+    -webkit-animation-name: blinker;
+    -webkit-animation-duration: 3s;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-iteration-count: infinite;
+    -moz-animation-name: blinker;
+    -moz-animation-duration: 3s;
+    -moz-animation-timing-function: linear;
+    -moz-animation-iteration-count: infinite;
+    animation-name: blinker;
+    animation-duration: 3s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+@-moz-keyframes blinker {
+    0% {
+        opacity: 1.0;
+    }
+    50% {
+        opacity: 0.0;
+    }
+    100% {
+        opacity: 1.0;
+    }
+}
+
+@-webkit-keyframes blinker {
+    0% {
+        opacity: 1.0;
+    }
+    50% {
+        opacity: 0.0;
+    }
+    100% {
+        opacity: 1.0;
+    }
+}
+
+@keyframes blinker {
+    0% {
+        opacity: 1.0;
+    }
+    50% {
+        opacity: 0.0;
+    }
+    100% {
+        opacity: 1.0;
+    }
+}
+
+.device_blocks {
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.more_height {
+    max-height: 450px !important;
+}
+
+.cordinate_gen {
+    position: absolute;
+    width: 42px;
+    height: 28px;
+    opacity: 0.5;
+}
+
+.PCM {
+    top: 450px;
+    left: 80px;
+}
+
+.ABS {
+    top: 847px;
+    left: 265px;
+}
+
+.cordinate_gen_active {
+    background-color: red;
+}
+
+.cordinate_gen_inactive {
+    background-color: yellow;
+}
+
+.imgmap_css_container_cardata {
+    background-image: url('../../../assets/images/cardata.png');
+    background-repeat: no-repeat;
+    width: 160px;
+    height: 160px;
+    color: red;
+}
+
+.blink_me {
+    -webkit-animation-name: blinker;
+    -webkit-animation-duration: 3s;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-iteration-count: infinite;
+    -moz-animation-name: blinker;
+    -moz-animation-duration: 3s;
+    -moz-animation-timing-function: linear;
+    -moz-animation-iteration-count: infinite;
+    animation-name: blinker;
+    animation-duration: 3s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+@-moz-keyframes blinker {
+    0% {
+        opacity: 1.0;
+    }
+    50% {
+        opacity: 0.0;
+    }
+    100% {
+        opacity: 1.0;
+    }
+}
+
+@-webkit-keyframes blinker {
+    0% {
+        opacity: 1.0;
+    }
+    50% {
+        opacity: 0.0;
+    }
+    100% {
+        opacity: 1.0;
+    }
+}
+
+@keyframes blinker {
+    0% {
+        opacity: 1.0;
+    }
+    50% {
+        opacity: 0.0;
+    }
+    100% {
+        opacity: 1.0;
+    }
+}
+
+.device_blocks {
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.more_height {
+    max-height: 450px !important;
+}
+
+.cordinate_gen_new {
+    position: absolute;
+    width: 100%;
+    height: 28px;
+    opacity: 0.5;
+    color: rgb(8, 30, 213);
+    font-weight: bolder;
+}
+
+.LF {
+    top: 0;
+    left: 25px;
+}
+
+.RF {
+    top: 0;
+    left: 116px;
+}
+
+.LR {
+    top: 100px;
+    left: 25px;
+}
+
+.RR {
+    top: 100px;
+    left: 116px;
+}
+
+.ODOMETER {
+    top: 130px;
+    left: 53px;
+}
+
+.cordinate_gen_active_new {
+    /*background-color: yellow;*/
+}

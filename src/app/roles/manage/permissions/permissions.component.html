@@ -1,0 +1,60 @@
+<div class="col-md-12">
+  <div class="col-md-4"></div>
+  <div class="col-md-4">
+    <h4>Owner</h4>
+  </div>
+  <div class="col-md-4">
+    <h4>Admin</h4>
+    <div class="checkbox pull-right">
+      <label>
+        <input type="checkbox" (change)="onCheckAll()" name="allPermissions" [(ngModel)]="checkAll"> All
+      </label>
+    </div>
+  </div>
+  <div *ngFor="let permissionGroup of permissionList">
+    <div class="col-md-12">
+      <div class="col-md-12">
+        <div class="col-md-4">
+          <h4>{{permissionGroup.module_key}}</h4>
+        </div>
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+          <div class="checkbox pull-right">
+            <label>
+              <input type="checkbox" (change)="onPermissionGroupAllChange(permissionGroup,permissionGroup.checkAll)" name="{{permissionGroup.module_key}}_all"
+                [(ngModel)]="permissionGroup.checkAll"> All
+            </label>
+          </div>
+        </div>
+        <hr>
+      </div>
+
+      <div *ngFor="let permission of permissionGroup.permissions">
+        <div class="col-md-4">
+          <div class="checkbox">
+            <label>
+              {{permission.name}}
+            </label>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" (change)="onAnyPermissionChange(permissionGroup,permission)" [disabled]="permission.isCheckedAdmin || permission.viewDisable"
+                name="{{permission.permission_key}}_owner" [(ngModel)]="permission.isCheckedOwner">
+            </label>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" (change)="onAdminPermissionChange(permission);onAnyPermissionChange(permissionGroup,permission)" name="{{permission.permission_key}}_admin"
+                [(ngModel)]="permission.isCheckedAdmin" [disabled]="permission.adminViewDisable">
+            </label>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

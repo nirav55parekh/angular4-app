@@ -1,0 +1,28 @@
+<app-search [rows]="scripts" [searchField]="searchField" [tempData]="temp" [searchList]="searchList" (searchEvent)="onSearch($event)"></app-search>
+
+<ngx-datatable [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" class="material striped"
+  [rows]="scripts" [columns]="[{name:'Name'},{name:'Program'}]" [sorts]="[{prop: 'name', dir: 'asc'}]" [rowHeight]="'auto'"
+  [limit]="searchComp.rowlimit">
+  <ngx-datatable-column name="#">
+    <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
+      <strong>{{rowIndex+1}}</strong>
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column name="Name"></ngx-datatable-column>
+  <ngx-datatable-column name="Program"></ngx-datatable-column>
+  <ngx-datatable-column name="Commited">
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      <span class="label" [ngClass]="{'label-primary':(row.commited=='Commited'),'label-danger':(row.commited=='UnCommitted')}">
+        <span [ngClass]="{'glyphicon glyphicon-circle-arrow-up':(row.commited=='Commited'),'glyphicon glyphicon-circle-arrow-down':(row.commited=='UnCommitted')}"
+          aria-hidden="true"></span>
+        {{row.commited}}</span>
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column [width]="350" name="Actions" [sortable]="false" [canAutoResize]="false" [draggable]="false" [resizeable]="false">
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      <a class="btn btn-sm btn-info" [routerLink]="['/home/scripts/view',row.id]">
+        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> View
+      </a>
+    </ng-template>
+  </ngx-datatable-column>
+</ngx-datatable>

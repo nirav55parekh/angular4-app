@@ -1,0 +1,86 @@
+<form (ngSubmit)="onSubmit(f)" #f="ngForm">
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <span>{{title}}</span>
+    </div>
+    <div class="panel-body">
+      <div class="form-group row">
+        <label for="name" class="col-sm-2 col-form-label">Name :</label>
+        <div class="col-sm-10">
+          <input type="text" autocomplete="off" name="name" [(ngModel)]="user.providers.local.name" class="form-control" required="required">
+          <span *ngIf="f.submitted && f.controls.name.invalid">
+            <span class="input-error">Name is required</span>
+          </span>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="name" class="col-sm-2 col-form-label">Email :</label>
+        <div class="col-sm-10">
+          <input [disabled]="editMode" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" type="text" autocomplete="off"
+            name="email" [(ngModel)]="user.email" class="form-control" required="required">
+          <span *ngIf="f.submitted && f.controls.email.invalid">
+            <span class="input-error" *ngIf="f.controls.email.errors.required">Email is required</span>
+            <span class="input-error" *ngIf="!f.controls.email.errors.required && f.controls.email.errors.pattern">Email is invalid</span>
+          </span>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="name" class="col-sm-2 col-form-label">Username :</label>
+        <div class="col-sm-10">
+          <input type="text" autocomplete="off" name="username" [(ngModel)]="user.providers.local.username" class="form-control" required="required">
+          <span *ngIf="f.submitted && f.controls.username.invalid">
+            <span class="input-error" *ngIf="f.controls.username.errors.required">Username is required</span>
+          </span>
+        </div>
+      </div>
+      <div *ngIf="!editMode" class="form-group row">
+        <label for="name" class="col-sm-2 col-form-label">Password :</label>
+        <div class="col-sm-10">
+          <input type="password" autocomplete="off" name="password" [(ngModel)]="user.providers.local.password" class="form-control"
+            required="required">
+          <span *ngIf="f.submitted && f.controls.password.invalid">
+            <span class="input-error" *ngIf="f.controls.password.errors.required">Password is required</span>
+          </span>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="name" class="col-sm-2 col-form-label">Approved :</label>
+        <div class="col-sm-10">
+          <input [(ngModel)]="user.providers.local.approved" type="checkbox" name="approved" class="" checked>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="name" class="col-sm-2 col-form-label">Role :</label>
+        <div class="col-sm-10">
+          <!-- <select [(ngModel)]="user.providers.local.role.id" name="role" class="form-control" required>
+            <option *ngFor="let r of roles" [value]="r.id" [selected]="user.providers.local.role.id == r.id">{{r.name}}</option>
+          </select> -->
+          <ng-select (change)="onChange($event)" required [items]="roles" [clearable]="false" name="role" bindLabel="name" bindValue="id"
+            placeholder="Select role" [(ngModel)]="user.providers.local.role.id">
+          </ng-select>
+          <span *ngIf="f.submitted && f.controls.role.invalid">
+            <span class="input-error">Please select role</span>
+          </span>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="name" class="col-sm-2 col-form-label">Script Groups :</label>
+        <div class="col-sm-10">
+          <ng-select [items]="scriptGroups" bindLabel="name" [multiple]="true" name="scriptGroups" [(ngModel)]="selectedScriptGroups">
+          </ng-select>
+        </div>
+      </div>
+    </div>
+    <div class="panel-footer">
+      <button type="submit" class="btn btn-success">
+        <span class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span> Save</button>
+      <button type="button" class="btn btn-default" [routerLink]="['/home/users']">
+        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel</button>
+    </div>
+  </div>
+  <div class="alert alert-danger alert-dismissable" *ngIf="errorMessage">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Error!</strong> {{errorMessage}}
+  </div>
+</form>

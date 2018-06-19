@@ -1,0 +1,17 @@
+<div *ngIf="headingDetails.tagLine">
+    <h3>
+        <span class="{{headingDetails.icon}}" aria-hidden="true"></span> {{headingDetails.heading||""}}
+    </h3>
+    <p style="color:grey">{{headingDetails.tagLine||""}}</p>
+    <div>
+        <h3>
+            {{headingDetails.title||""}}
+            <div class="pull-right" *ngIf="listView">
+                <button *ngIf="addButtonEnable || isAdmin" class="btn btn-sm btn-primary" [routerLink]="[headingDetails.routerLink]">
+                    <span class="glyphicon glyphicon-plus"></span> Add
+                </button>
+            </div>
+        </h3>
+    </div>
+    <hr>
+</div>

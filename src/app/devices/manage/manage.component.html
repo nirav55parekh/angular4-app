@@ -1,0 +1,84 @@
+<form (ngSubmit)="onSubmit(f)" #f="ngForm">
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <span>{{title}}</span>
+    </div>
+    <div class="panel-body">
+      <div class="form-group row">
+        <label for="name" class="col-sm-2 col-form-label">Client SW No :</label>
+        <div class="col-sm-10">
+          <input type="text" autocomplete="off" name="client_dev_no" [(ngModel)]="device.client_sw_no" class="form-control" required="required">
+          <span *ngIf="f.submitted && f.controls.client_dev_no.invalid">
+            <span class="input-error">Client SW No is required</span>
+          </span>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="name" class="col-sm-2 col-form-label">Nickname :</label>
+        <div class="col-sm-10">
+          <input type="text" autocomplete="off" name="nickname" [(ngModel)]="device.nickname" class="form-control" required="required">
+          <span *ngIf="f.submitted && f.controls.nickname.invalid">
+            <span class="input-error">Nickname is required</span>
+          </span>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="name" class="col-sm-2 col-form-label">Client Dev No :</label>
+        <div class="col-sm-10">
+          <input type="text" *ngIf="!editMode; else editModeTemp; " autocomplete="off" name="client_dev_no" [(ngModel)]="device.client_dev_no"
+            class="form-control" required="required">
+          <ng-template #editModeTemp>
+            <span class="control-label"> {{device.client_dev_no}} </span>
+          </ng-template>
+          <span *ngIf="f.submitted && f.controls.client_dev_no.invalid">
+            <span class="input-error">Client Dev No is required</span>
+          </span>
+        </div>
+      </div>
+      <div class="form-group row" *ngIf="!isCustomer">
+        <label for="name" class="col-sm-2 col-form-label">Client Public Key :</label>
+        <div class="col-sm-10">
+          <textarea rows="5" autocomplete="off" name="client_public_key" [(ngModel)]="device.client_public_key" class="form-control"
+            required="required"></textarea>
+          <span *ngIf="f.submitted && f.controls.client_public_key.invalid">
+            <span class="input-error">Client public key is required</span>
+          </span>
+        </div>
+      </div>
+      <div class="form-group row" *ngIf="!isCustomer" >
+        <label for="name" class="col-sm-2 col-form-label">Client Certificate :</label>
+        <div class="col-sm-10">
+          <textarea rows="5" autocomplete="off" name="client_certificate" [(ngModel)]="device.client_certificate" class="form-control"
+            required="required"></textarea>
+          <span *ngIf="f.submitted && f.controls.client_certificate.invalid">
+            <span class="input-error">Client certificate is required</span>
+          </span>
+        </div>
+      </div>
+      <div class="form-group row" *ngIf="isAdmin">
+        <label for="name" class="col-sm-2 col-form-label">User :</label>
+        <div class="col-sm-10">
+          <ng-select [items]="users" bindLabel="providers.local.name" [multiple]="true" name="users" [(ngModel)]="deviceUsers">
+          </ng-select>
+          <!-- <textarea rows="3" autocomplete="off" name="user" [(ngModel)]="device.user" class="form-control" required="required"></textarea> -->
+          <span *ngIf="f.submitted && f.controls.users.invalid">
+            <span class="input-error">User is required</span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="panel-footer">
+      <button type="submit" class="btn btn-success">
+        <span class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span> Save
+      </button>
+      <button type="button" class="btn btn-default" [routerLink]="['/home/devices']">
+        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel
+      </button>
+    </div>
+  </div>
+  <div class="alert alert-danger alert-dismissable" *ngIf="errorMessage">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Error!</strong> {{errorMessage}}
+  </div>
+</form>

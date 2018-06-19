@@ -1,0 +1,386 @@
+<form #f="ngForm">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <span>{{title}}</span>
+    </div>
+    <div class="panel-body">
+      <div class="form-group row">
+        <label for="name" class="col-sm-2 col-form-label">Name :</label>
+        <div class="col-sm-10">
+          <input type="text" autocomplete="off" name="name" [(ngModel)]="script.name" class="form-control" required="required">
+          <span *ngIf="f.submitted && f.controls.name.invalid">
+            <span class="input-error">Name is required</span>
+          </span>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="name" class="col-sm-2 col-form-label">Category :</label>
+        <div class="col-sm-10">
+          <!-- <select *ngIf="script.category; else noscript" [(ngModel)]="script.category.id" name="category" class="form-control" required>
+            <option *ngFor="let c of categories" [value]="c.id" [selected]="c">{{c.name}}</option>
+          </select> -->
+          <ng-select requierd [items]="categories" *ngIf="isIdAvailableForCategories; else noscript" [clearable]="false" name="category"
+            bindLabel="name" bindValue="id" (change)="onChange($event)" placeholder="Select category" [(ngModel)]="script.category.id">
+          </ng-select>
+          <ng-template #noscript>
+            <!-- <select [(ngModel)]="script.category" name="category" class="form-control" required>
+              <option *ngFor="let c of categories" [value]="c.id" [selected]="c">{{c.name}}</option>
+            </select> -->
+            <ng-select requierd [items]="categories" [clearable]="false" name="category" bindLabel="name" bindValue="id" placeholder="Select category"
+              [(ngModel)]="script.category">
+            </ng-select>
+          </ng-template>
+          <span *ngIf="f.submitted && f.controls.name.invalid || categoryNotAvail">
+            <span class="input-error">Please select category</span>
+          </span>
+        </div>
+      </div>
+      <div *ngIf="isIdAvailableForCategories; else noscriptmake">
+        <div class="form-group row" *ngIf="script.category.id === 3">
+          <label for="name" class="col-sm-2 col-form-label">Make :</label>
+          <div class="col-sm-10">
+            <ng-select [items]="makes" bindLabel="name" [multiple]="true" name="makes" [(ngModel)]="selectedMakes">
+            </ng-select>
+            <span *ngIf="f.submitted && f.controls.makes.invalid">
+              <span class="input-error">Please select any make</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <ng-template #noscriptmake>
+        <div class="form-group row" *ngIf="script.category === 3">
+          <label for="name" class="col-sm-2 col-form-label">Make :</label>
+          <div class="col-sm-10">
+            <ng-select [items]="makes" bindLabel="name" [multiple]="true" name="makes" [(ngModel)]="selectedMakes">
+            </ng-select>
+            <span *ngIf="f.submitted && f.controls.makes.invalid">
+              <span class="input-error">Please select any make</span>
+            </span>
+          </div>
+        </div>
+      </ng-template>
+      <div class="form-group row">
+        <label for="name" class="col-sm-2 col-form-label">Program :</label>
+        <div class="col-sm-10">
+          <div class="input-group">
+            <div class="input-group-addon">pod/</div>
+            <input type="text" autocomplete="off" name="program" [(ngModel)]="script.program" class="form-control" required="required">
+            <div class="input-group-addon">.py</div>
+          </div>
+          <span *ngIf="f.submitted && f.controls.program.invalid">
+            <span class="input-error">Program is required</span>
+          </span>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="name" class="col-sm-2 col-form-label">Contents(Python) :</label>
+        <div class="col-sm-10">
+          <textarea rows="10 " autocomplete="off" name="contents" [(ngModel)]="script.contents" class="form-control" required="required"></textarea>
+          <span *ngIf="f.submitted && f.controls.contents.invalid">
+            <span class="input-error">Please enter contents</span>
+          </span>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="name" class="col-sm-2 col-form-label">Comments :</label>
+        <div class="col-sm-10">
+          <textarea rows="5" name="comments" [(ngModel)]="script.comments" class="form-control"></textarea>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="name" class="col-sm-2 col-form-label">Script Groups :</label>
+        <div class="col-sm-10">
+          <ng-select [items]="scriptGroups" bindLabel="name" [multiple]="true" name="scriptGroups" [(ngModel)]="selectedScriptGroups"
+            required>
+          </ng-select>
+          <span *ngIf="f.submitted && f.controls.scriptGroups.invalid">
+            <span class="input-error">Please select any script group</span>
+          </span>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="name" class="col-sm-2 col-form-label">Device number
+          <small>(for preview)</small> :</label>
+        <div class="col-sm-10">
+          <input autocomplete="off" [(ngModel)]="script.deviceNo" name="deviceNo" (input)="searchDevice()" [typeahead]="dataSource"
+            class="form-control">
+          <br>
+          <div class="btn-group">
+            <button type="button" class="btn btn-primary" [disabled]="!script.deviceNo" (click)="preivewpythonscript()">
+              <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Preview
+            </button>
+            <button type="button" class="btn btn-primary" (click)="openLogsModal(template1)">
+              <span class="glyphicon glyphicon-list" aria-hidden="true"></span> Open Logs</button>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row" *ngIf="isAdmin">
+        <label for="name" class="col-sm-2 col-form-label">Script Owner :</label>
+        <div class="col-sm-10">
+          <ng-select [items]="users" bindLabel="providers.local.name" name="users" [(ngModel)]="scriptUser">
+          </ng-select>
+        </div>
+      </div>
+    </div>
+    <div class="panel-footer">
+      <button type="submit" class="btn btn-success">
+        <span class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span> {{ (editMode)? "Update" : "Save"}}</button>
+      <button type="submit" class="btn btn-success" (click)="onSubmit(1)" *ngIf="!editMode">
+        <span class="glyphicon glyphicon-circle-arrow-up" aria-hidden="true"></span> Add & Commit</button>
+      <button type="submit" class="btn btn-success" (click)="onSubmit(1)" *ngIf="editMode">
+        <span class="glyphicon glyphicon-circle-arrow-up" aria-hidden="true"></span> Update & Commit</button>
+      <button type="button" class="btn btn-default" [routerLink]="['/home/scripts']">
+        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel</button>
+    </div>
+  </div>
+  <div class="alert alert-danger alert-dismissable" *ngIf="errorMessage">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Error!</strong> {{errorMessage}}
+  </div>
+  <div class="col-md-12">
+
+    <div *ngIf="errorMsg" class="alert ng-isolate-scope alert-danger" role="alert" type="danger">
+      <pre>{{errorMsg}}</pre>
+    </div>
+    <div *ngIf="successMsg" class="alert ng-isolate-scope success" role="alert" type="success">
+      <div [innerHTML]="successMsg">
+      </div>
+    </div>
+
+  </div>
+
+</form>
+
+<ng-template #template1>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Logs - {{deviceSelected.client_dev_no}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+
+        <div class="panel panel-default">
+          <div class="panel-body panel-border" *ngIf="scanning">
+            <div class="row">
+              <div class="col-sm-12 device_blocks more_height">
+                <div class="col-md-12" *ngFor="let scan of scanning; let i = index">
+
+                  <div class="alert alert-info alert-dismissable" role="alert" type="info" close="alert_2_hide = true" *ngIf="alert_2_hide == null">
+                    <div>
+                      <span [innerHTML]="scan" [ngClass]="{'ng-scope blink_me': i == 0}">
+                      </span>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="panel-heading" *ngIf="deviceSelected.errors">
+            <h3 class="panel-title">Device - Summary</h3>
+          </div>
+          <div class="panel-body panel-border" *ngIf="deviceSelected.errors">
+            <div class="row">
+              <div class="col-sm-12 device_blocks">
+                <div class="col-md-2" *ngFor="let modulesE of deviceSelected.errors | module" style="cursor: pointer;">
+                  <div class="alert ng-isolate-scope alert-info alert-dismissable" role="alert" type="info" close="alert_2_hide = true" *ngIf="alert_2_hide == null">
+                    <div>
+                      <span (click)="showLogs(modulesE, modulesE.module)"> {{modulesE.module}} - {{modulesE.length}}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel-heading" *ngIf="deviceSelected.errors">
+            <h3 class="panel-title">Device - Map
+              <a *ngIf="deviceSelected.errors" class="btn btn-orange btn-sm btn-icon icon-left" (click)="refreshState()">
+                Re-Scan</a>
+            </h3>
+          </div>
+          <div class="panel-body panel-border" *ngIf="deviceSelected.errors">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="imgmap_css_container" id="imgmap201744111422" *ngIf="deviceSelected.errors">
+                  <strong>Topology</strong>
+                  <div *ngFor="let module of modules">
+                    <div *ngIf="!deviceSelected.errors[module].length">
+                      <a class="{{module}} cordinate_gen cordinate_gen_inactive" alt="" title="{{module}}" href="" target="">
+                        <em></em>
+                      </a>
+                    </div>
+                    <div *ngIf="device.errors[module].length">
+                      <a (click)="showLogs(deviceSelected.errors[module],module)" class="{{module}} cordinate_gen cordinate_gen_active" alt=""
+                        title="{{module}}" href="" target="">
+                        <em></em>
+                      </a>
+                    </div>
+                  </div>
+                  <!--                            <div *ngIf="!device.errors.PCM.length">
+                                        <a (click)="showLogs(device.errors.PCM, 'PCM')" class="{{module}}"  alt="" title="" href="" target="" ><em></em></a>
+                                    </div>
+                                    <div *ngIf="device.errors.PCM.length">
+                                        <a   alt="" title="" href="" target="" ><em></em></a>
+                                    </div>
+        
+                                    <div *ngIf="!device.errors.ABS.length">
+                                        <a (click)="showLogs(device.errors.ABS, 'ABS')" style="position: absolute;top: 847px;left: 265px;width: 42px;height: 28px;background-color: red;opacity: 0.5;"  alt="" title="" href="" target="" ><em></em></a>
+                                    </div>
+        
+                                    <div *ngIf="device.errors.ABS.length">
+                                        <a style="position: absolute;top: 847px;left: 265px;width: 42px;height: 28px;background-color: yellow;opacity: 0.5;"  alt="" title="" href="" target="" ><em></em></a>
+                                    </div>-->
+                </div>
+                <div class="error_details">
+                  <div class="error_details_back" style="margin-top: 12px;display: none;">
+                    <div class="col-sm-4">
+                      <a (click)="hideLogs(deviceSelected.errors.PCM)" class="error_details_back btn btn-orange btn-sm btn-icon icon-left">
+                        BACK
+                      </a>
+                    </div>
+                    <div class="col-sm-4"></div>
+                    <div class="col-sm-4">
+                      <select id="multiselect" class="form-control" multiple ng-model="selectedStatus" ng-options="status for status in statuses">
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="error_details_content" style="display: none;">
+                    <h3 class="panel-title">Module selected : {{selectedModule.name}}</h3>
+                    <BR>
+                    <table class="table table-model-2 table-hover">
+                      <tr>
+                        <th>
+                          #
+                        </th>
+                        <th>
+                          Code
+                        </th>
+                        <th>
+                          Title
+                        </th>
+                        <th>
+                          Description
+                        </th>
+                        <th>
+                          Status
+                        </th>
+                      </tr>
+                      <ng-container *ngIf="selectedStatus.length == 0 || compareStatus('statusNull')">
+                        <tr *ngFor="let codesin of selectedModule.logs; let i = index">
+                          <td>
+                            {{i+1}}
+                          </td>
+                          <td>
+                            <span *ngFor="let status of codesin|module">
+                              {{status.module}}
+                            </span>
+                          </td>
+                          <td>
+                            <span *ngFor="let status of codesin|module">
+                              <span *ngIf="codes[status.module].title">
+                                {{codes[status.module].title}}
+                              </span>
+
+                              <span *ngIf="!codes[status.module].title">
+                                No Title found
+                              </span>
+                            </span>
+
+                          </td>
+                          <td>
+                            <span *ngFor="let status of codesin|module">
+                              <span *ngIf="codes[status.module].description">
+                                {{codes[status.module].description}}
+                              </span>
+
+                              <span *ngIf="!codes[status.module].description">
+                                No Description found
+                              </span>
+                            </span>
+                          </td>
+                          <td>
+                            <span *ngFor="let status of codesin|module">
+                              {{status}}
+                            </span>
+                          </td>
+                        </tr>
+                      </ng-container>
+                      <ng-container *ngIf="selectedStatus.length && !compareStatus(statusNull)">
+                        <tr *ngFor="let codesin of selectedModule.logs | module ; let i = index">
+                          <ng-container ng-if="compareStatus(status)">
+                            <td *ngFor="let status of codesin|module">
+                              {{codesin.module+1}}
+                            </td>
+                          </ng-container>
+                          <ng-container ng-if="compareStatus(status)">
+                            <td *ngFor="let status of codesin|module">
+                              <span *ngFor="let status of codesin|module">
+                                {{status.module}}
+                              </span>
+                            </td>
+                          </ng-container>
+                          <ng-container ng-if="compareStatus(status)">
+                            <td *ngFor="let status of codesin|module">
+
+                              <span *ngFor="let status of codesin|module">
+                                <span *ngIf="codes[status.module].title">
+                                  {{codes[status.module].title}}
+                                </span>
+
+                                <span *ngIf="!codes[status.module].title">
+                                  No Title found
+                                </span>
+                              </span>
+
+                            </td>
+                          </ng-container>
+                          <ng-container ng-if="compareStatus(status)">
+                            <td *ngFor="let status of codesin|module">
+                              <span *ngFor="let status of codesin|module">
+                                <span *ngIf="codes[status.module].description">
+                                  {{codes[status.module].description}}
+                                </span>
+
+                                <span *ngIf="!codes[status.module].description">
+                                  No Description found
+                                </span>
+                              </span>
+                            </td>
+                          </ng-container>
+                          <ng-container ng-if="compareStatus(status)">
+                            <td *ngFor="let status of codesin|module">
+                              <span *ngFor="let status of codesin|module">
+                                {{status}}
+                              </span>
+                            </td>
+                          </ng-container>
+                        </tr>
+                      </ng-container>
+                    </table>
+
+                  </div>
+                  <div class="error_details_back" style="margin-top: 12px;display: none;">
+                    <a (click)="hideLogs(deviceSelected.errors.PCM)" class="error_details_back btn btn-orange btn-sm btn-icon icon-left">
+                      BACK
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

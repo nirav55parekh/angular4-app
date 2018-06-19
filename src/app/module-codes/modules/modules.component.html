@@ -1,0 +1,29 @@
+<h6>Modules</h6>
+<hr>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <ng-container *ngIf="modules.length>0; else noRecord">
+            <tr *ngFor="let module of modules; let i = index">
+                <td>{{i+1}}</td>
+                <td>{{module.module}}</td>
+                <td>
+                    <span (click)="showCodes(module.module)" class="clickable btn btn-warning btn-sm btn-icon icon-left ng-binding">Vide Codes</span>
+                </td>
+            </tr>
+        </ng-container>
+        <ng-template #noRecord>
+            <tr>
+                <td colspan=3>
+                    There are no devices found
+                </td>
+            </tr>
+        </ng-template>
+    </tbody>
+</table>
